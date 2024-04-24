@@ -1,5 +1,5 @@
 (library
- (name money)
+ (name app)
  (libraries
    core
    core_unix.command_unix

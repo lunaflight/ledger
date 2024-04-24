@@ -1,2 +1,2 @@
 let () =
-    Money.Run.main ()
+    App.Run.main ()
