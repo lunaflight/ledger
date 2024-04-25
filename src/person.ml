@@ -6,7 +6,7 @@ module T = struct
     [@@deriving compare, sexp, sexp_of]
 
     let of_name name = name
-    let string_of_t person = person
+    let to_string person = person
 end
 include T
 include Comparator.Make(T)

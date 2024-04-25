@@ -6,4 +6,4 @@ type comparator_witness
 val comparator : (t, comparator_witness) Comparator.t
 
 val of_name : string -> t
-val string_of_t : t -> string
+val to_string : t -> string
