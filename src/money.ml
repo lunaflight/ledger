@@ -4,6 +4,7 @@ type t = int
 let ( + ) cents delta = cents + delta
 let ( - ) cents delta = cents - delta
 
+let empty = 0
 let of_cents cents = cents
 
 let string_of_t money = 

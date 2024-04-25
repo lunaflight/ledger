@@ -1,12 +1,12 @@
-type t = {
-    name: string;
-    money: Money.t;
-}
+open! Core
+open! Sexplib.Std
 
-let ( + ) person money = { person with money = Money.( + ) person.money money }
-let ( - ) person money = { person with money = Money.( - ) person.money money }
+module T = struct
+    type t = string
+    [@@deriving compare, sexp_of]
 
-let of_data name money = { name; money }
-
-let string_of_t person = 
-    Printf.sprintf "%s: %s" person.name (Money.string_of_t person.money)
+    let of_name name = name
+    let string_of_t person = person
+end
+include T
+include Comparator.Make(T)

@@ -1,8 +1,9 @@
+open! Core
+
 type t
+[@@deriving compare, sexp_of]
+type comparator_witness
+val comparator : (t, comparator_witness) Comparator.t
 
-val ( + ) : t -> Money.t -> t
-val ( - ) : t -> Money.t -> t
-
-val of_data : string -> Money.t -> t
-
+val of_name : string -> t
 val string_of_t : t -> string
