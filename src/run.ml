@@ -14,14 +14,20 @@ let transfer =
         )
     
 let check =
-    let check user () =
-        Printf.printf "User %s has $%d.\n" user 10
+    let check src () =
+        let owes_list = Tracker.get_owees_of (Saver.load_tracker ()) src in
+        let print (person, money) = match money with
+            | x when Money.is_pos x -> Printf.printf "%s owes %s %s\n" (Person.string_of_t src) (Person.string_of_t person) (Money.to_abs_string money)
+            | x when Money.is_neg x -> Printf.printf "%s paid %s %s\n" (Person.string_of_t src) (Person.string_of_t person) (Money.to_abs_string money)
+            | _ -> failwith "$0 should not be recorded in the tracker\n."
+        in
+        List.iter print owes_list
     in
     Command.basic
-        ~summary:"Check how much money [user] has."
+        ~summary:"Check how much money [person] has."
         Command.Let_syntax.(
-            let%map_open user = anon ("user" %: string) in
-            check user
+            let%map_open person = anon ("person" %: string) in
+            check (Person.of_name person)
         )
 
 let add =

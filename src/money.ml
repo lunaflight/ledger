@@ -8,11 +8,25 @@ type t = int
 let ( + ) cents delta = cents + delta
 let ( - ) cents delta = cents - delta
 let ( = ) t t' = t = t'
+let is_pos t = t > 0
+let is_neg t = t < 0
 
 let empty = 0
 let of_cents cents = cents
 
-let string_of_t money = 
-    let dollars = money mod 100 in
-    let cents = money - dollars in
-    Printf.sprintf "$%d.%02d" dollars cents
+let non_neg_to_string dollars cents =
+    if dollars < 0 then failwith "Negative value"
+    else Printf.sprintf "$%d.%02d" dollars cents
+
+let money_to_pair money = (money mod 100, money - (money mod 100))
+
+let to_string money = 
+    let (dollars, cents) = money_to_pair money in
+    if dollars < 0 then
+        "-" ^ (non_neg_to_string (abs dollars) cents)
+    else
+        (non_neg_to_string dollars cents)
+        
+let to_abs_string money =
+    let (dollars, cents) = money_to_pair money in
+    non_neg_to_string (abs dollars) cents
