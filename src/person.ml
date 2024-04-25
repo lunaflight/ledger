@@ -3,7 +3,7 @@ open! Sexplib.Std
 
 module T = struct
     type t = string
-    [@@deriving compare, sexp_of]
+    [@@deriving compare, sexp, sexp_of]
 
     let of_name name = name
     let string_of_t person = person

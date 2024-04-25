@@ -1,5 +1,9 @@
+open! Core
+open! Sexplib.Std
+
 (* This is the number of cents, as an integer *)
 type t = int
+[@@deriving sexp, sexp_of]
 
 let ( + ) cents delta = cents + delta
 let ( - ) cents delta = cents - delta

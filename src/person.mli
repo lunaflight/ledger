@@ -1,7 +1,7 @@
 open! Core
 
 type t
-[@@deriving compare, sexp_of]
+[@@deriving compare, sexp, sexp_of]
 type comparator_witness
 val comparator : (t, comparator_witness) Comparator.t
 

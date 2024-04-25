@@ -1,4 +1,5 @@
 type t
+[@@deriving sexp, sexp_of]
 
 val ( + ) : t -> t -> t
 val ( - ) : t -> t -> t

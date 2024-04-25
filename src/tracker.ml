@@ -1,7 +1,9 @@
 open! Core
+open! Sexplib
+open! Sexplib.Std
 
-type person_to_owee_map = (Person.t, Money.t, Person.comparator_witness) Map.t
-type t = (Person.t, person_to_owee_map, Person.comparator_witness) Map.t
+type person_to_owee_map = Money.t Map.M(Person).t [@@deriving sexp]
+type t = person_to_owee_map Map.M(Person).t [@@deriving sexp]
 
 let empty = Map.empty (module Person)
 let owees_empty = Map.empty (module Person)
