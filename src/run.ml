@@ -1,6 +1,8 @@
 let transfer =
     let transfer money src dst () =
-        Printf.printf "From %s to %s: %d transferred.\n" src dst money
+        let tracker = Saver.load_tracker () in
+        let tracker = Tracker.transfer tracker src dst money in
+        Saver.save_tracker tracker;
     in
     Command.basic
         ~summary:"Transfer [money] from [src] to [dst]."
@@ -8,7 +10,7 @@ let transfer =
             let%map_open money = anon ("money" %: int)
             and src = anon ("src" %: string)
             and dst = anon ("dst" %: string) in
-            transfer money src dst
+            transfer (Money.of_cents money) (Person.of_name src) (Person.of_name dst)
         )
     
 let check =

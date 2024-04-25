@@ -3,6 +3,7 @@ type t
 
 val ( + ) : t -> t -> t
 val ( - ) : t -> t -> t
+val ( = ) : t -> t -> bool
 
 val empty : t
 val of_cents : int -> t

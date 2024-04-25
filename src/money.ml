@@ -7,6 +7,7 @@ type t = int
 
 let ( + ) cents delta = cents + delta
 let ( - ) cents delta = cents - delta
+let ( = ) t t' = t = t'
 
 let empty = 0
 let of_cents cents = cents
