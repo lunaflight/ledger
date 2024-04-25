@@ -5,6 +5,9 @@ open! Sexplib.Std
 type person_to_owee_map = Money.t Map.M(Person).t [@@deriving sexp]
 type t = person_to_owee_map Map.M(Person).t [@@deriving sexp]
 
+let to_string tracker = Sexp.to_string @@ sexp_of_t tracker
+let of_string string = t_of_sexp @@ Sexp.of_string string
+
 let empty = Map.empty (module Person)
 let owees_empty = Map.empty (module Person)
 
