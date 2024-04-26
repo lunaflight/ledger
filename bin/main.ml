@@ -1,2 +1,1 @@
-let () =
-    App.Run.main ()
+let () = App.Run.main ()
