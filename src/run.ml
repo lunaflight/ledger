@@ -6,11 +6,10 @@ let transfer =
   in
   Command.basic
     ~summary:"Transfer [money] from [src] to [dst]."
-    Command.Let_syntax.(
-      let%map_open src = anon ("src" %: string)
-      and dst = anon ("dst" %: string)
-      and money = anon ("money" %: int) in
-      transfer (Money.of_cents money) (Person.of_name src) (Person.of_name dst))
+    (let%map_open.Command src = anon ("src" %: string)
+     and dst = anon ("dst" %: string)
+     and money = anon ("money" %: int) in
+     transfer (Money.of_cents money) (Person.of_name src) (Person.of_name dst))
 ;;
 
 let check =
@@ -36,9 +35,8 @@ let check =
   in
   Command.basic
     ~summary:"Check how much money [person] has."
-    Command.Let_syntax.(
-      let%map_open person = anon ("person" %: string) in
-      check (Person.of_name person))
+    (let%map_open.Command person = anon ("person" %: string) in
+     check (Person.of_name person))
 ;;
 
 let add =
@@ -48,10 +46,9 @@ let add =
     Saver.save_tracker tracker
   in
   Command.basic
-    ~summary:"Add [user] to the database for tracking."
-    Command.Let_syntax.(
-      let%map_open user = anon ("user" %: string) in
-      add (Person.of_name user))
+    ~summary:"Add [user] to the tracker."
+    (let%map_open.Command user = anon ("user" %: string) in
+     add (Person.of_name user))
 ;;
 
 let delete =
@@ -61,16 +58,34 @@ let delete =
     Saver.save_tracker tracker
   in
   Command.basic
-    ~summary:"Delete [user] from the database."
-    Command.Let_syntax.(
-      let%map_open user = anon ("user" %: string) in
-      delete (Person.of_name user))
+    ~summary:"Delete [user] from the tracker."
+    (let%map_open.Command user = anon ("user" %: string) in
+     delete (Person.of_name user))
+;;
+
+let reset =
+  let reset is_confirmed () =
+    if is_confirmed
+    then Saver.delete_tracker ()
+    else (
+      Printf.printf "Delete the tracker? [y/N]: ";
+      Out_channel.flush stdout;
+      match In_channel.(input_line stdin) with
+      | Some x when x = "y" -> Saver.delete_tracker ()
+      | _ -> Printf.printf "Operation aborted.\n")
+  in
+  Command.basic
+    ~summary:"Delete all information from the tracker."
+    (let%map_open.Command is_confirmed =
+       flag "-yes" no_arg ~doc:"Delete without prompting"
+     in
+     reset is_confirmed)
 ;;
 
 let command =
   Command.group
     ~summary:"A simple command line interface to track money."
-    [ "add", add; "check", check; "delete", delete; "transfer", transfer ]
+    [ "add", add; "check", check; "delete", delete; "reset", reset; "transfer", transfer ]
 ;;
 
 let main () = Command_unix.run ~version:"1.0" ~build_info:"MoneyApp" command

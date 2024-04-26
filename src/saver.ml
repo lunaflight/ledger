@@ -16,3 +16,8 @@ let load_tracker ?(filename = "data/tracker.sexp") () =
   with
   | Sys_error _ -> Tracker.empty
 ;;
+
+let delete_tracker ?(filename = "data/tracker.sexp") () =
+  try Sys_unix.remove filename with
+  | Sys_error _ -> ()
+;;
