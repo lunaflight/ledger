@@ -7,9 +7,9 @@ let transfer =
   Command.basic
     ~summary:"Transfer [money] from [src] to [dst]."
     Command.Let_syntax.(
-      let%map_open money = anon ("money" %: int)
-      and src = anon ("src" %: string)
-      and dst = anon ("dst" %: string) in
+      let%map_open src = anon ("src" %: string)
+      and dst = anon ("dst" %: string)
+      and money = anon ("money" %: int) in
       transfer (Money.of_cents money) (Person.of_name src) (Person.of_name dst))
 ;;
 
@@ -42,18 +42,35 @@ let check =
 ;;
 
 let add =
-  let add user () = Printf.printf "Added %s for tracking.\n" user in
+  let add user () =
+    let tracker = Saver.load_tracker () in
+    let tracker = Tracker.add tracker user in
+    Saver.save_tracker tracker
+  in
   Command.basic
     ~summary:"Add [user] to the database for tracking."
     Command.Let_syntax.(
       let%map_open user = anon ("user" %: string) in
-      add user)
+      add (Person.of_name user))
+;;
+
+let delete =
+  let delete user () =
+    let tracker = Saver.load_tracker () in
+    let tracker = Tracker.delete tracker user in
+    Saver.save_tracker tracker
+  in
+  Command.basic
+    ~summary:"Delete [user] from the database."
+    Command.Let_syntax.(
+      let%map_open user = anon ("user" %: string) in
+      delete (Person.of_name user))
 ;;
 
 let command =
   Command.group
     ~summary:"A simple command line interface to track money."
-    [ "add", add; "check", check; "transfer", transfer ]
+    [ "add", add; "check", check; "delete", delete; "transfer", transfer ]
 ;;
 
 let main () = Command_unix.run ~version:"1.0" ~build_info:"MoneyApp" command
