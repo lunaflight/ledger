@@ -7,20 +7,12 @@
 (source
  (github username/reponame))
 
-(authors "Author Name")
-
-(maintainers "Maintainer Name")
-
-(license LICENSE)
-
-(documentation https://url/to/documentation)
+(authors "luna")
 
 (package
  (name ledger)
- (synopsis "A short synopsis")
- (description "A longer description")
+ (synopsis "A pet project to track money transactions")
  (depends ocaml dune)
- (tags
-  (topics "to describe" your project)))
+ )
 
 ; See the complete stanza docs at https://dune.readthedocs.io/en/stable/dune-files.html#dune-project
