@@ -2,6 +2,7 @@ open! Core
 open! Sexplib.Std
 
 let save_tracker ?(filename = "data/tracker.sexp") tracker =
+  Core_unix.mkdir_p (Filename.dirname filename);
   let outc = Out_channel.create filename in
   Out_channel.fprintf outc "%s" (Tracker.to_string tracker);
   Out_channel.close outc
