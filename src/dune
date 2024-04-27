@@ -1,5 +1,5 @@
 (library
  (name app)
- (libraries core core_unix.command_unix)
+ (libraries core core_unix.command_unix re)
  (preprocess
   (pps ppx_jane)))

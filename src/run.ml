@@ -8,8 +8,8 @@ let transfer =
     ~summary:"Transfer [money] from [src] to [dst]."
     (let%map_open.Command src = anon ("src" %: string)
      and dst = anon ("dst" %: string)
-     and money = anon ("money" %: int) in
-     transfer (Money.of_cents money) (Person.of_name src) (Person.of_name dst))
+     and money = anon ("money" %: string) in
+     transfer (Money.of_string money) (Person.of_name src) (Person.of_name dst))
 ;;
 
 let check =
