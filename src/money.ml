@@ -2,7 +2,7 @@ open! Core
 open! Sexplib.Std
 
 (* This is the number of cents, as an integer *)
-type t = int [@@deriving sexp, sexp_of]
+type t = int [@@deriving compare, sexp, sexp_of]
 
 let empty = 0
 let ( + ) cents delta = cents + delta
